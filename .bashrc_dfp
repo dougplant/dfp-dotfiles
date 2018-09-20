@@ -4,13 +4,18 @@ echo "loaded dfp-dotfiles/.bashrc_dfp"
 # don't put duplicate lines or lines starting with space in the history.
 # See bash(1) for more options
 HISTCONTROL=ignoreboth
+# for setting history length see HISTSIZE and HISTFILESIZE in bash(1)
+HISTSIZE=10000
+HISTFILESIZE=20000
+# don't add noise to the history file
+HISTIGNORE='l:ls:bg:fg:pwd:history'
+HISTTIMEFORMAT='%F %T '
 
 # append to the history file, don't overwrite it
 shopt -s histappend
 
-# for setting history length see HISTSIZE and HISTFILESIZE in bash(1)
-HISTSIZE=10000
-HISTFILESIZE=20000
+# add command to history immediately
+PROMPT_COMMAND='history -a'
 
 #  check the window size after each command and, if necessary, update the values of LINES and COLUMNS.
 shopt -s checkwinsize
@@ -18,20 +23,23 @@ shopt -s checkwinsize
 # 
 alias l='ls -al'
 
-# show the git history of a project:
-alias hist="git log --graph --abbrev-commit --decorate --date=relative --format=format:'%C(bold blue)%h%C(reset) - %C(bold green)(%ar)%C(reset) %C(white)%s%C(reset) %C(dim white)- %an%C(reset)%C(bold yellow)%d%C(reset)' --all"
+# hash the imput string to [0 to 255], then use that to set a foreground color (via 38;5;)
+function calc256color {
+    let sum=0
+    lettervalues=($(echo $1 | od -An -vtu1))
+    for lv in "${lettervalues[@]}"
+    do
+       let sum=$sum+lv
+    done
+    let colorindex=$sum%256
+    echo "\e[38;5;"$colorindex"m" 
+}
 
 # put the git branch on the prompt
 function parse_git_branch {
   git branch --no-color 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/(\1)/'
 }
-export PS1="\u@\h: \W \$(parse_git_branch)$ "
-
-# show what was done in specfic commit (diff between commit and previous commit)
-function diffcommit {
-    git diff $1~ $1
-}
-alias diffcommit=diffcommit
+export PS1="\[\e[2m\]\@\[\e[0m\] \u@$(calc256color \\\h)\h\[\e[0m\]: \W \e[38;5;226m\$(parse_git_branch)\[\e[0m\] $ "
 
 # Add an "alert" alias for long running commands.  Use like: sleep 10; alert
 alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo error)" "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'
@@ -44,4 +52,29 @@ if [ -x /usr/bin/dircolors ]; then
     alias fgrep='fgrep --color=auto'
     alias egrep='egrep --color=auto'
 fi
+
+
+
+
+################################################################################################
+### git aliases
+
+# show what was done in specfic commit (diff between commit and previous commit)
+function diffcommit {
+    git diff $1~ $1
+}
+alias gitdiffcommit=diffcommit
+
+# show the git history of a project:
+alias githist="git log --graph --abbrev-commit --decorate --date=relative --format=format:'%C(bold blue)%h%C(reset) - %C(bold green)(%ar)%C(reset) %C(white)%s%C(reset) %C(dim white)- %an%C(reset)%C(bold yellow)%d%C(reset)' --all"
+
+gitlog = git log --pretty=format:"%C(yellow)%h%Cred%d\\ %Creset%s%Cblue\\ [%cn]" --decorate
+gitlogn = git log --pretty=format:"%C(yellow)%h%Cred%d\\ %Creset%s%Cblue\\ [%cn]" --decorate --numstat
+gitlogs = git log --pretty=format:"%C(yellow)%h\\ %ad%Cred%d\\ %Creset%s%Cblue\\ [%cn]" --decorate --date=short
+gitlogr = git log --pretty=format:"%C(yellow)%h\\ %ad%Cred%d\\ %Creset%s%Cblue\\ [%cn]" --decorate --date=relative
+gitlist = git ls-files
+gitunstage = git reset --
+#accept-ours = "!f() { git checkout --ours -- \"${@:-.}\"; git add -u \"${@:-.}\"; }; f"
+#accept-theirs = "!f() { git checkout --theirs -- \"${@:-.}\"; git add -u \"${@:-.}\"; }; f"
+
 
