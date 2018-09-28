@@ -3,10 +3,9 @@ echo "loaded dfp-dotfiles/.bashrc_dfp"
 
 ## reviewing for help: https://sanctum.geek.nz/arabesque/bash-prompts/
 
-
 # don't put duplicate lines or lines starting with space in the history.
 # See bash(1) for more options
-#HISTCONTROL=ignoreboth
+HISTCONTROL=ignoreboth
 # for setting history length see HISTSIZE and HISTFILESIZE in bash(1)
 HISTSIZE=10000
 HISTFILESIZE=20000
@@ -30,31 +29,6 @@ cgr="\[\e[2m\]";
 cy="\e[38;5;226m"
 cend="\[\e[0m\]";
 
-# hash the imput string to [0 to 255], then use that to set a foreground color (via 38;5;)
-function calc256color {
-    let sum=0
-    ##lettervalues=($(echo $1 | od -An -vtu1))
-## hostname | grep -o .
-
-    lettervalues=($(echo $1 | grep -o .))
-
-    for lv in "${lettervalues[@]}"
-    do
-echo ">"$lv"<"
-       let sum=$sum+lv
-    done
-    let colorindex=$sum%185
-let colorindex=$colorindex+16
-echo "ci"$colorindex"ci"
-    echo "\e[38;5;"$colorindex"m" 
-}
-
-# prompt, get an intuitive time string
-function prompt_time {
-    timestring=$(date +%I:%M)
-    echo $timestring
-}
-
 # put the git branch on the prompt
 function prompt_gitbranch {
     gitbranch=$(git branch --no-color 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/(\1)/')
@@ -71,8 +45,8 @@ function colorizehostname {
         let sum=$sum+$(printf '%d' "'$lv")
     done
     # convert sum to color index, try to avoid bad colors
-    colorindex=$(($sum % 179))
-    colorindex=$(($colorindex + 22))
+    colorindex=$(($sum % 72))
+    colorindex=$(($colorindex + 160))
     # emit color code and hostname
     echo "\e[38;5;"$colorindex"m"$(hostname)
 }
