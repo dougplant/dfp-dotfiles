@@ -29,6 +29,12 @@ cgr="\[\e[2m\]";
 cy="\e[38;5;226m"
 cend="\[\e[0m\]";
 
+# prompt, get an intuitive time string
+function prompt_time {
+    timestring=$(date +%I:%M)
+    echo $timestring
+}
+
 # put the git branch on the prompt
 function prompt_gitbranch {
     gitbranch=$(git branch --no-color 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/(\1)/')
