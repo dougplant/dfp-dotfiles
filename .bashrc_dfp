@@ -1,21 +1,24 @@
 
 echo "loaded dfp-dotfiles/.bashrc_dfp"
 
+## reviewing for help: https://sanctum.geek.nz/arabesque/bash-prompts/
+
+
 # don't put duplicate lines or lines starting with space in the history.
 # See bash(1) for more options
-HISTCONTROL=ignoreboth
+#HISTCONTROL=ignoreboth
 # for setting history length see HISTSIZE and HISTFILESIZE in bash(1)
 HISTSIZE=10000
 HISTFILESIZE=20000
 # don't add noise to the history file
-HISTIGNORE='l:ls:bg:fg:pwd:history'
-HISTTIMEFORMAT='%F %T '
+#HISTIGNORE='l:ls:bg:fg:pwd:history'
+#HISTTIMEFORMAT='%F %T '
 
 # append to the history file, don't overwrite it
-shopt -s histappend
+#shopt -s histappend
 
 # add command to history immediately
-PROMPT_COMMAND='history -a'
+#PROMPT_COMMAND='history -a'
 
 #  check the window size after each command and, if necessary, update the values of LINES and COLUMNS.
 shopt -s checkwinsize
@@ -23,23 +26,58 @@ shopt -s checkwinsize
 # 
 alias l='ls -al'
 
+cgr="\[\e[2m\]";
+cy="\e[38;5;226m"
+cend="\[\e[0m\]";
+
 # hash the imput string to [0 to 255], then use that to set a foreground color (via 38;5;)
 function calc256color {
     let sum=0
-    lettervalues=($(echo $1 | od -An -vtu1))
+    ##lettervalues=($(echo $1 | od -An -vtu1))
+## hostname | grep -o .
+
+    lettervalues=($(echo $1 | grep -o .))
+
     for lv in "${lettervalues[@]}"
     do
+echo ">"$lv"<"
        let sum=$sum+lv
     done
-    let colorindex=$sum%256
+    let colorindex=$sum%185
+let colorindex=$colorindex+16
+echo "ci"$colorindex"ci"
     echo "\e[38;5;"$colorindex"m" 
 }
 
-# put the git branch on the prompt
-function parse_git_branch {
-  git branch --no-color 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/(\1)/'
+# prompt, get an intuitive time string
+function prompt_time {
+    timestring=$(date +%I:%M)
+    echo $timestring
 }
-export PS1="\[\e[2m\]\@\[\e[0m\] \u@$(calc256color \\\h)\h\[\e[0m\]: \W \e[38;5;226m\$(parse_git_branch)\[\e[0m\] $ "
+
+# put the git branch on the prompt
+function prompt_gitbranch {
+    gitbranch=$(git branch --no-color 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/(\1)/')
+    echo $gitbranch
+}
+
+# colorize hostname
+function colorizehostname {
+    let sum=0
+    lettervalues=($(hostname | grep -o .))
+    # sum up ordinal values of letters in hostname
+    for lv in "${lettervalues[@]}"
+    do
+        let sum=$sum+$(printf '%d' "'$lv")
+    done
+    # convert sum to color index, try to avoid bad colors
+    colorindex=$(($sum % 179))
+    colorindex=$(($colorindex + 22))
+    # emit color code and hostname
+    echo "\e[38;5;"$colorindex"m"$(hostname)
+}
+
+export PS1="$cgr\$(prompt_time)$cend \u@$(colorizehostname)$cend \W $cy\$(prompt_gitbranch)$cend$ "
 
 # Add an "alert" alias for long running commands.  Use like: sleep 10; alert
 alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo error)" "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'
@@ -58,7 +96,8 @@ fi
 
 ################################################################################################
 ### git aliases
-
+### ... probably all this stuff should be in ~/.gitconfig ?
+###
 # show what was done in specfic commit (diff between commit and previous commit)
 function diffcommit {
     git diff $1~ $1
@@ -68,12 +107,12 @@ alias gitdiffcommit=diffcommit
 # show the git history of a project:
 alias githist="git log --graph --abbrev-commit --decorate --date=relative --format=format:'%C(bold blue)%h%C(reset) - %C(bold green)(%ar)%C(reset) %C(white)%s%C(reset) %C(dim white)- %an%C(reset)%C(bold yellow)%d%C(reset)' --all"
 
-gitlog = git log --pretty=format:"%C(yellow)%h%Cred%d\\ %Creset%s%Cblue\\ [%cn]" --decorate
-gitlogn = git log --pretty=format:"%C(yellow)%h%Cred%d\\ %Creset%s%Cblue\\ [%cn]" --decorate --numstat
-gitlogs = git log --pretty=format:"%C(yellow)%h\\ %ad%Cred%d\\ %Creset%s%Cblue\\ [%cn]" --decorate --date=short
-gitlogr = git log --pretty=format:"%C(yellow)%h\\ %ad%Cred%d\\ %Creset%s%Cblue\\ [%cn]" --decorate --date=relative
-gitlist = git ls-files
-gitunstage = git reset --
+#gitlog = git log --pretty=format:"%C(yellow)%h%Cred%d\\ %Creset%s%Cblue\\ [%cn]" --decorate
+#gitlogn = git log --pretty=format:"%C(yellow)%h%Cred%d\\ %Creset%s%Cblue\\ [%cn]" --decorate --numstat
+#gitlogs = git log --pretty=format:"%C(yellow)%h\\ %ad%Cred%d\\ %Creset%s%Cblue\\ [%cn]" --decorate --date=short
+#gitlogr = git log --pretty=format:"%C(yellow)%h\\ %ad%Cred%d\\ %Creset%s%Cblue\\ [%cn]" --decorate --date=relative
+#gitlist = git ls-files
+#gitunstage = git reset --
 #accept-ours = "!f() { git checkout --ours -- \"${@:-.}\"; git add -u \"${@:-.}\"; }; f"
 #accept-theirs = "!f() { git checkout --theirs -- \"${@:-.}\"; git add -u \"${@:-.}\"; }; f"
 
