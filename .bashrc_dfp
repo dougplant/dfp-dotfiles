@@ -10,14 +10,14 @@ HISTCONTROL=ignoreboth
 HISTSIZE=10000
 HISTFILESIZE=20000
 # don't add noise to the history file
-#HISTIGNORE='l:ls:bg:fg:pwd:history'
-#HISTTIMEFORMAT='%F %T '
+HISTIGNORE='l:ls:bg:fg:pwd:history'
+HISTTIMEFORMAT='%F %T '
 
 # append to the history file, don't overwrite it
-#shopt -s histappend
+shopt -s histappend
 
 # add command to history immediately
-#PROMPT_COMMAND='history -a'
+PROMPT_COMMAND='history -a'
 
 #  check the window size after each command and, if necessary, update the values of LINES and COLUMNS.
 shopt -s checkwinsize
@@ -26,7 +26,7 @@ shopt -s checkwinsize
 alias l='ls -al'
 
 cgr="\[\e[2m\]";
-cy="\e[38;5;226m"
+cy="\[\e[38;5;226m\]"
 cend="\[\e[0m\]";
 
 # prompt, get an intuitive time string
@@ -54,7 +54,7 @@ function colorizehostname {
     colorindex=$(($sum % 72))
     colorindex=$(($colorindex + 160))
     # emit color code and hostname
-    echo "\e[38;5;"$colorindex"m"$(hostname)
+    echo "\[\e[38;5;"$colorindex"m\]"$(hostname)
 }
 
 export PS1="$cgr\$(prompt_time)$cend \u@$(colorizehostname)$cend \W $cy\$(prompt_gitbranch)$cend$ "
