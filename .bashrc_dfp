@@ -14,16 +14,21 @@ HISTTIMEFORMAT='%F %T '
 
 # append to the history file, don't overwrite it
 shopt -s histappend
+# pack multiline commands into single history entry
+shopt -s cmdhist
+# attempt to complete @hostnames
+shopt -s hostcomplete
 
 # add command to history immediately
 PROMPT_COMMAND='history -a'
 
-#  check the window size after each command and, if necessary, update the values of LINES and COLUMNS.
+# check the window size after each command and, if necessary, update the values of LINES and COLUMNS.
 shopt -s checkwinsize
 
 # 
 alias l='ls -al'
 
+# string parts to help with colorizing the bash prompt
 cgr="\[\e[2m\]";
 cy="\[\e[38;5;226m\]"
 cend="\[\e[0m\]";
@@ -49,12 +54,17 @@ function prompt_pathdepth {
 
 # colorize hostname
 function colorizehostname {
+    # you can add chars to the empty prefix to tweak the color
+    hostnamestring=""$(hostname)
+
     let sum=0
-    lettervalues=($(hostname | grep -o .))
+    lettervalues=($(echo $hostnamestring | grep -o .))
+    
     # sum up ordinal values of letters in hostname
     for lv in "${lettervalues[@]}"
     do
         let sum=$sum+$(printf '%d' "'$lv")
+        #echo "sum:"$sum
     done
     # convert sum to color index, try to avoid bad colors
     colorindex=$(($sum % 72))
