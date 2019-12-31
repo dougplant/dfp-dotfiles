@@ -28,6 +28,10 @@ shopt -s checkwinsize
 # 
 alias l='ls -al'
 
+#
+alias vim="vim -u ~/dfp-dotfiles/.vimrc"
+alias vi="vim -u ~/dfp-dotfiles/.vimrc"
+
 # string parts to help with colorizing the bash prompt
 cgr="\[\e[2m\]";
 cy="\[\e[38;5;226m\]"
@@ -63,7 +67,7 @@ function colorizehostname {
     # sum up ordinal values of letters in hostname
     for lv in "${lettervalues[@]}"
     do
-        let sum=$sum+$(printf '%d' "'$lv")
+        let sum=$sum+7\*$(printf '%d' "'$lv")
         #echo "sum:"$sum
     done
     # convert sum to color index, try to avoid bad colors
