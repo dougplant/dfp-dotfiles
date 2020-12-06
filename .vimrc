@@ -28,3 +28,5 @@ set hlsearch
 
 " Do case insensitive matching
 set ignorecase         
+
+set nocompatible
