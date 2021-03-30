@@ -1,3 +1,5 @@
+# sudo yum install vim-enhanced
+
 set number
 
 " load indentation rules and plugins according to the detected filetype
