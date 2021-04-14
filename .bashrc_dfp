@@ -62,7 +62,7 @@ function prompt_pathdepth {
 # colorize hostname
 function colorizehostname {
     # you can add chars to the empty prefix to tweak the color
-    hostnamestring=""$(hostname)
+    hostnamestring="zzzz"$(hostname)
 
     let sum=0
     lettervalues=($(echo $hostnamestring | grep -o .))
