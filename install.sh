@@ -11,7 +11,7 @@ plainuser="$1"
 
 homefolder="/home/$plainuser"
 
-if [ ! -d "homefolder" ] 
+if [ ! -d "$homefolder" ] 
 then
     echo "Home folder does not exist: "$homefolder 
     exit 1
