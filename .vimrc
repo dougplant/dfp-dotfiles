@@ -1,4 +1,4 @@
-# sudo yum install vim-enhanced
+" sudo yum install vim-enhanced
 
 set number
 
