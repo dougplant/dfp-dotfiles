@@ -29,3 +29,10 @@ fi
 
 echo "alias dfp='. $homefolder/dfp-dotfiles/.bashrc_dfp'" >> .bashrc
 echo "alias dfp='. $homefolder/dfp-dotfiles/.bashrc_dfp'" >> /root/.bashrc
+
+alias vim="vim -u $homefolder/dfp-dotfiles/.vimrc" >> .bashrc
+alias vi="vim -u $homefolder/dfp-dotfiles/.vimrc" >> .bashrc
+
+alias vim="vim -u $homefolder/dfp-dotfiles/.vimrc" >> /root/.bashrc
+alias vi="vim -u $homefolder/dfp-dotfiles/.vimrc" >> /root/.bashrc
+
