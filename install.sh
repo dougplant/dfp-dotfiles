@@ -20,8 +20,12 @@ fi
 yum -y install vim-enhanced
 
 cd "$homefolder"
-git clone https://github.com/dougplant/dfp-dotfiles.git
-chown -R $plainuser:$plainuser dfp-dotfiles/
+
+if [ ! -d "$homefolder/dfp-dotfiles" ]
+then
+   git clone https://github.com/dougplant/dfp-dotfiles.git
+   chown -R $plainuser:$plainuser dfp-dotfiles/
+fi
 
 echo "alias dfp='. $homefolder/dfp-dotfiles/.bashrc_dfp'" >> .bashrc
 echo "alias dfp='. $homefolder/dfp-dotfiles/.bashrc_dfp'" >> /root/.bashrc
