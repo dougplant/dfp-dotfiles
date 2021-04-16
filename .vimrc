@@ -1,34 +1,30 @@
-" sudo yum install vim-enhanced
-
+set nocompatible
 set number
+set tabstop=4
+set shiftwidth=4
+set expandtab
+
+set autoindent
+set cindent
+set incsearch
+set paste
 
 " load indentation rules and plugins according to the detected filetype
 if has("autocmd")
   filetype plugin indent on
 endif
 
-" use a tab size of 4, and expand the tab character into spaces
-set tabstop=4
-set expandtab
-set paste
-
 " enable syntax highlighting by default.
 if has("syntax")
   syntax on
 endif
 
-" If using a dark background within the editing area and syntax highlighting
-" turn on this option as well
 set background=dark
 colorscheme koehler
 
-set autoindent
-set smartindent
-
-" highlight search
-set hlsearch
-
-" Do case insensitive matching
-set ignorecase         
-
-set nocompatible
+set showcmd            " Show (partial) command in status line.
+set showmatch          " Show matching brackets.
+set ignorecase         " Do case insensitive matching
+set smartcase          " Do smart case matching
+set autowrite          " Automatically save before commands like :next and :make
+set hidden             " Hide buffers when they are abandoned
