@@ -24,8 +24,8 @@ cd "$homefolder"
 if [ ! -d "$homefolder/dfp-dotfiles" ]
 then
    git clone https://github.com/dougplant/dfp-dotfiles.git
-   chown -R $plainuser:$plainuser dfp-dotfiles/
 fi
+chown -R $plainuser:$plainuser dfp-dotfiles/
 
 echo "alias dfp='. $homefolder/dfp-dotfiles/.bashrc_dfp'" >> .bashrc
 echo "alias dfp='. $homefolder/dfp-dotfiles/.bashrc_dfp'" >> /root/.bashrc
