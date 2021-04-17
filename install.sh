@@ -30,3 +30,6 @@ fi
 echo "alias dfp='. $homefolder/dfp-dotfiles/.bashrc_dfp'" >> .bashrc
 echo "alias dfp='. $homefolder/dfp-dotfiles/.bashrc_dfp'" >> /root/.bashrc
 
+# create symlink so that the vi/vim aliases point at the single vimrc file
+cd /root
+ln -s /home/readerbound/dfp-dotfiles/
