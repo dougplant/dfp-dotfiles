@@ -17,6 +17,7 @@ then
     exit 1
 fi
 
+echo "intalling vim"
 yum -y install vim-enhanced
 
 cd "$homefolder"
@@ -25,6 +26,8 @@ if [ ! -d "$homefolder/dfp-dotfiles" ]
 then
    git clone https://github.com/dougplant/dfp-dotfiles.git
 fi
+
+echo "setting perms on the dfp dotfiles"
 chown -R $plainuser:$plainuser dfp-dotfiles/
 
 echo "setting up the 'dfp' aliases"
