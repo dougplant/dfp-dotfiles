@@ -17,20 +17,14 @@ then
     exit 1
 fi
 
-echo "intalling vim"
 yum -y install vim-enhanced
 
 cd "$homefolder"
 
-if [ ! -d "$homefolder/dfp-dotfiles" ]
-then
-   git clone https://github.com/dougplant/dfp-dotfiles.git
-fi
+## rm -rf dfp-dotfiles
+##  git clone https://github.com/dougplant/dfp-dotfiles.git
+## chown -R $plainuser:$plainuser dfp-dotfiles/
 
-echo "setting perms on the dfp dotfiles"
-chown -R $plainuser:$plainuser dfp-dotfiles/
-
-echo "setting up the 'dfp' aliases"
 # sed -i '/^alias dfp/d' .bashrc
 echo "alias dfp='. $homefolder/dfp-dotfiles/.bashrc_dfp'" >> .bashrc
 
@@ -38,7 +32,6 @@ echo "alias dfp='. $homefolder/dfp-dotfiles/.bashrc_dfp'" >> .bashrc
 echo "alias dfp='. $homefolder/dfp-dotfiles/.bashrc_dfp'" >> /root/.bashrc
 
 # create symlink so that the vi/vim aliases point at the single vimrc file
-echo "setting up the root symlink"
 cd /root
 rm -f dfp-dotfiles
 ln -s /home/readerbound/dfp-dotfiles/
