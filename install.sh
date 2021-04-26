@@ -27,6 +27,7 @@ then
 fi
 chown -R $plainuser:$plainuser dfp-dotfiles/
 
+echo "setting up the 'dfp' aliases"
 # sed -i '/^alias dfp/d' .bashrc
 echo "alias dfp='. $homefolder/dfp-dotfiles/.bashrc_dfp'" >> .bashrc
 
@@ -34,6 +35,7 @@ echo "alias dfp='. $homefolder/dfp-dotfiles/.bashrc_dfp'" >> .bashrc
 echo "alias dfp='. $homefolder/dfp-dotfiles/.bashrc_dfp'" >> /root/.bashrc
 
 # create symlink so that the vi/vim aliases point at the single vimrc file
+echo "setting up the root symlink"
 cd /root
 rm -f dfp-dotfiles
 ln -s /home/readerbound/dfp-dotfiles/
