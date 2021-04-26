@@ -2,7 +2,7 @@
 
 # run (as root) like: bash install.sh readerbound
 
-if [[ $EUID -ne 0 ]]; then
+if [[ "$EUID" -ne 0 ]]; then
    echo "This has to be run as root" 
    exit 1
 fi
