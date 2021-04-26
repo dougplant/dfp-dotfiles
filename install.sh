@@ -26,7 +26,7 @@ cd "$homefolder"
 ## chown -R $plainuser:$plainuser dfp-dotfiles/
 
 # sed -i '/^alias dfp/d' .bashrc
-echo "alias dfp='. $homefolder/dfp-dotfiles/.bashrc_dfp'" >> .bashrc
+echo "alias dfp='. $homefolder/dfp-dotfiles/.bashrc_dfp'" >> $homefolder/.bashrc
 
 # sed -i '/^alias dfp/d' /root/.bashrc
 echo "alias dfp='. $homefolder/dfp-dotfiles/.bashrc_dfp'" >> /root/.bashrc
