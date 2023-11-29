@@ -27,6 +27,7 @@ shopt -s checkwinsize
 
 # 
 alias l='ls -al'
+alias lsd='ls -ld */'
 
 #
 alias vim="vim -u ~/dfp-dotfiles/.vimrc"
@@ -78,6 +79,10 @@ function colorizehostname {
 }
 
 export PS1="$cgr\$(prompt_time)$cend \u@$(colorizehostname)$cend $cgr/\$(prompt_pathdepth)/$cend\W $cy\$(prompt_gitbranch)$cend$ "
+
+# tell less to: (i) ignore case in searches (j) center the target line in window
+# (M) use verbose prompt (r) parse color codes as colors
+export LESS=-ij.5Mr
 
 # Add an "alert" alias for long running commands.  Use like: sleep 10; alert
 alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo error)" "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'
