@@ -17,7 +17,7 @@ then
     exit 1
 fi
 
-yum -y install vim-enhanced
+#yum -y install vim-enhanced
 
 cd "$homefolder"
 
