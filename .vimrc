@@ -3,11 +3,8 @@ set number
 set tabstop=4
 set shiftwidth=4
 set expandtab
-
 set autoindent
-set cindent
 set incsearch
-set paste
 
 " load indentation rules and plugins according to the detected filetype
 if has("autocmd")
@@ -28,3 +25,4 @@ set ignorecase         " Do case insensitive matching
 set smartcase          " Do smart case matching
 set autowrite          " Automatically save before commands like :next and :make
 set hidden             " Hide buffers when they are abandoned
+
